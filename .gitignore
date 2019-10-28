@@ -1,0 +1,4 @@
+.setting\
+.swagger-codegen\
+target\
+.swagger-codegen-ignore
