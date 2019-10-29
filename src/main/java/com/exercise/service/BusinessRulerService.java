@@ -4,15 +4,16 @@
 package com.exercise.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.AgendaFilter;
-import org.kie.api.runtime.rule.Match;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.exercise.model.AccountAccount;
+import com.exercise.model.TransactionTransaction;
+import com.exercise.model.TransactionsRepository;
 
 /**
  * @author Z749313
@@ -28,28 +29,21 @@ public class BusinessRulerService {
 		KieSession kieSession = kieContainer.newKieSession();
 		kieSession.setGlobal("violations", violations);
 		kieSession.insert(account);
-		kieSession.fireAllRules(new AgendaFilter() {
-			
-			@Override
-			public boolean accept(Match match) {
-				return "Account must initialized".equals(match.getRule().getName());
-			}
-		});
+		kieSession.getAgenda().getAgendaGroup("account").setFocus();
+		kieSession.fireAllRules();
 		kieSession.dispose();
 		return violations;
 	}
 	
-	public ArrayList<String> accountNotInitializedRule(AccountAccount account, ArrayList<String> violations) {
+	public List<String> preConditionsTransactionRules(AccountAccount account, TransactionTransaction transaction, 
+			List<String> violations, TransactionsRepository transactions) {
 		KieSession kieSession = kieContainer.newKieSession();
 		kieSession.setGlobal("violations", violations);
 		kieSession.insert(account);
-		kieSession.fireAllRules(new AgendaFilter() {
-			
-			@Override
-			public boolean accept(Match match) {
-				return "Account not initialized to transaction".equals(match.getRule().getName());
-			}
-		});
+		kieSession.insert(transaction);
+		kieSession.insert(transactions);
+		kieSession.getAgenda().getAgendaGroup("transaction").setFocus();
+		kieSession.fireAllRules();
 		kieSession.dispose();
 		return violations;
 	}

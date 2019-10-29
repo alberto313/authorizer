@@ -2,8 +2,6 @@ package com.exercise.api;
 
 import static org.springframework.http.HttpStatus.OK;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.exercise.exception.ServiceException;
 import com.exercise.model.Account;
 import com.exercise.model.AccountResponse;
 import com.exercise.model.Transaction;

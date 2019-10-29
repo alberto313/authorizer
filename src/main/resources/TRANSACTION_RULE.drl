@@ -1,33 +1,51 @@
 import com.exercise.model.AccountAccount;
 import com.exercise.model.TransactionTransaction;
+import com.exercise.model.TransactionsRepository;
+import java.util.Date;
+import java.util.Calendar;
 
-
-global java.util.ArrayList violations;
+global java.util.List violations;
 
 dialect "mvel"
 
-rule "Account must exist"
-	salience 100
-	when
-		$ret: AccountAccount(equals(AccountAccount) == true);
-	then
-		violations.add("account-not-initialized");
-end
-
 rule "Insuficient limit"
-	salience 80
+	salience 90
+	agenda-group "transaction"
 	when
-		$av: AccountAccount(availableLimit);
-		$am: TransactionTransaction(amount);
-		$am > $av
+		AccountAccount( $av: availableLimit )
+		$tran: TransactionTransaction(amount > $av)
 	then
+		System.out.println("amount " + $tran.getAmount() + " > " + $av);
 		violations.add("insufficient-limit");
 end
 
 rule "Card not active"
-	salience 90
+	salience 100
+	agenda-group "transaction"
 	when
-		AccountAccount(activeCard == false)
+		$obj: AccountAccount(isActiveCard() == false)
 	then
 		violations.add("card-not-active");
+end
+
+rule "Double transaction"
+	salience 80
+	agenda-group "transaction"
+	when
+		TransactionTransaction($merc: getMerchant(), $amo: getAmount(), $time: getTime());
+		TransactionsRepository($transactions: getTransactions());
+		TransactionTransaction(merchant == $merc, amount == $amo, getTime() before[0m,2m] $time) from $transactions;
+	then
+		violations.add("doubled-transaction");
+end
+
+rule "High frecuency"
+	salience 90
+	agenda-group "transaction"
+	when
+		TransactionsRepository($transactions: getTransactions());
+		Date($now : time) from Calendar.getInstance().getTime();
+		$count: Number() from $transactions(TransactionTransaction($now before[0m,3m] getTime(), count(1)));
+	then
+		System.out.println("count transactions " + $count);
 end

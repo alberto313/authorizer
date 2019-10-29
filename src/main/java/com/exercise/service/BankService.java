@@ -4,8 +4,11 @@
 package com.exercise.service;
 
 import static com.exercise.util.Constants.CACHE_ACCOUNT_KEY;
+import static com.exercise.util.Constants.CACHE_TRANSACTIONS_KEY;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -18,6 +21,8 @@ import com.exercise.model.Account;
 import com.exercise.model.AccountAccount;
 import com.exercise.model.AccountResponse;
 import com.exercise.model.Transaction;
+import com.exercise.model.TransactionTransaction;
+import com.exercise.model.TransactionsRepository;
 import com.exercise.repository.IBankRepository;
 
 /**
@@ -41,7 +46,7 @@ public class BankService implements IBankService {
 
 		AccountResponse res = new AccountResponse();
 		
-		AccountAccount accountDetail = retrieveAccountFromCache().orElse(null);
+		AccountAccount accountDetail = retrieveDataFromCache(CACHE_ACCOUNT_KEY, AccountAccount.class).orElse(null);
 		
 		ArrayList<String> violations = businessRuler.createNewAccountRules(accountDetail, new ArrayList<String>());
 		
@@ -60,15 +65,19 @@ public class BankService implements IBankService {
 		
 		AccountResponse res = new AccountResponse();
 		
-		AccountAccount accountDetail = retrieveAccountFromCache().orElse(null);
+		AccountAccount accountDetail = retrieveDataFromCache(CACHE_ACCOUNT_KEY, AccountAccount.class).orElse(null);
+		TransactionsRepository transactions = retrieveDataFromCache(CACHE_TRANSACTIONS_KEY, TransactionsRepository.class).orElse(new TransactionsRepository(new ArrayList<TransactionTransaction>()));
 		
-		ArrayList<String> violations = businessRuler.accountNotInitializedRule(accountDetail, new ArrayList<String>());
+		List<String> violations = businessRuler.preConditionsTransactionRules(accountDetail, body.getTransaction(), new ArrayList<String>(), transactions);
 		
 		
-		
+
 		
 		if (violations.isEmpty()) {
-			
+			transactions.getTransactions().add(body.getTransaction());
+			accountDetail.setAvailableLimit(accountDetail.getAvailableLimit() - body.getTransaction().getAmount());
+			cacheService.store(CACHE_TRANSACTIONS_KEY, transactions);
+			cacheService.store(CACHE_ACCOUNT_KEY, accountDetail);
 		}
 		
 		
@@ -78,8 +87,8 @@ public class BankService implements IBankService {
 		return res;
 	}
 	
-	private Optional<AccountAccount> retrieveAccountFromCache() {
-		return cacheService.get(CACHE_ACCOUNT_KEY, AccountAccount.class);
+	private <T> Optional<T> retrieveDataFromCache(String key, Class<T> type) {
+		return cacheService.get(key, type);
 	}
 
 }

@@ -30,7 +30,7 @@ public class BusinessRulesContainerConfiguration {
 	
 	private KieServices kieServices = KieServices.Factory.get();
 	
-	private static final List<String> rules = Arrays.asList("ACCOUNT_RULE.drl");
+	private static final List<String> rules = Arrays.asList("ACCOUNT_RULE.drl", "TRANSACTION_RULE.drl");
 	
 	@Bean
 	public KieContainer kieContainer() throws IOException {

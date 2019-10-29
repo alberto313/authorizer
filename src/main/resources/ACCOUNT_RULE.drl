@@ -7,8 +7,10 @@ dialect "mvel"
 
 rule "Account must initialized"
 	salience 100
+	agenda-group "account"
 	when
-		$ret: AccountAccount(equals(AccountAccount) == false);
+		$first: AccountAccount();
+		AccountAccount(this == $first);
 	then
 		//modify(violations){add("account-already-initialized")};
 		violations.add("account-already-initialized");
