@@ -1,0 +1,33 @@
+import com.exercise.model.AccountAccount;
+import com.exercise.model.TransactionTransaction;
+
+
+global java.util.ArrayList violations;
+
+dialect "mvel"
+
+rule "Account must exist"
+	salience 100
+	when
+		$ret: AccountAccount(equals(AccountAccount) == true);
+	then
+		violations.add("account-not-initialized");
+end
+
+rule "Insuficient limit"
+	salience 80
+	when
+		$av: AccountAccount(availableLimit);
+		$am: TransactionTransaction(amount);
+		$am > $av
+	then
+		violations.add("insufficient-limit");
+end
+
+rule "Card not active"
+	salience 90
+	when
+		AccountAccount(activeCard == false)
+	then
+		violations.add("card-not-active");
+end

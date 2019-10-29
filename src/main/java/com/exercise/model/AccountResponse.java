@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class AccountResponse extends Account  {
   @JsonProperty("violations")
   @Valid
-  private List<String> violations = null;
+  private List<String> violations = new ArrayList<String>();
 
   public AccountResponse violations(List<String> violations) {
     this.violations = violations;

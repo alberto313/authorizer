@@ -7,6 +7,7 @@ import static java.util.Optional.ofNullable;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.github.benmanes.caffeine.cache.Cache;
 
@@ -14,6 +15,7 @@ import com.github.benmanes.caffeine.cache.Cache;
  * @author Alberto
  *
  */
+@Service(value="cacheService")
 public class CacheService implements ICacheService {
 	
 	@Autowired

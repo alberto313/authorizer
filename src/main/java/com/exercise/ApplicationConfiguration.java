@@ -3,15 +3,19 @@ package com.exercise;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+@Configuration
 @SpringBootApplication
+@EnableAutoConfiguration
 @EnableSwagger2
-@ComponentScan(basePackages = { "com.exercise", "com.exercise.api" , "com.exercise.configuration"})
-public class Swagger2SpringBoot implements CommandLineRunner {
+@ComponentScan(basePackages = { "com.exercise"})
+public class ApplicationConfiguration implements CommandLineRunner {
 
     @Override
     public void run(String... arg0) throws Exception {
@@ -21,7 +25,7 @@ public class Swagger2SpringBoot implements CommandLineRunner {
     }
 
     public static void main(String[] args) throws Exception {
-        new SpringApplication(Swagger2SpringBoot.class).run(args);
+        new SpringApplication(ApplicationConfiguration.class).run(args);
     }
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {

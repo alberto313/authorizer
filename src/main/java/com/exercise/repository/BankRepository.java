@@ -10,7 +10,7 @@ import com.exercise.model.AccountAccount;
 /**
  * Repository to simulate the persist from database
  */
-@Service
+@Service(value="bankRepository")
 public class BankRepository implements IBankRepository {
 
 	/**

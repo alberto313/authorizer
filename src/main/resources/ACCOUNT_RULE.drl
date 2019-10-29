@@ -1,0 +1,15 @@
+
+import com.exercise.model.AccountAccount;
+
+global java.util.ArrayList violations;
+
+dialect "mvel"
+
+rule "Account must initialized"
+	salience 100
+	when
+		$ret: AccountAccount(equals(AccountAccount) == false);
+	then
+		//modify(violations){add("account-already-initialized")};
+		violations.add("account-already-initialized");
+end

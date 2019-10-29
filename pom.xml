@@ -73,5 +73,16 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+    <!-- Business Rule Management Rules Dependencies -->
+	    <dependency>
+		    <groupId>org.drools</groupId>
+		    <artifactId>drools-core</artifactId>
+		    <version>7.28.0.Final</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.kie</groupId>
+		    <artifactId>kie-spring</artifactId>
+		    <version>7.28.0.Final</version>
+		</dependency>
     </dependencies>
 </project>
