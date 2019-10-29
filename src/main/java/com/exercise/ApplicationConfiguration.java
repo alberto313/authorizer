@@ -5,8 +5,12 @@ import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -35,6 +39,14 @@ public class ApplicationConfiguration implements CommandLineRunner {
         public int getExitCode() {
             return 10;
         }
-
+    }
+    
+    /**
+     * Initialize in-memory cache
+     * @return
+     */
+    @Bean
+    public Cache<Object, Object> cache() {
+    	return Caffeine.newBuilder().build();
     }
 }

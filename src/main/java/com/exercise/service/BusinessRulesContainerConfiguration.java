@@ -20,18 +20,28 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author Z749313
- *
+ * Business rules container thar will be in memory with the rules defined in .drl file(s)
  */
 @Configuration
 @ComponentScan("com.exercise.service")
 public class BusinessRulesContainerConfiguration {
 
 	
+	/**
+	 * New instance of kie service
+	 */
 	private KieServices kieServices = KieServices.Factory.get();
 	
+	/**
+	 * List of .drl files that contains all rules defined to be applied on the business
+	 */
 	private static final List<String> rules = Arrays.asList("ACCOUNT_RULE.drl", "TRANSACTION_RULE.drl");
 	
+	/**
+	 * Cointainer of rules
+	 * @return
+	 * @throws IOException
+	 */
 	@Bean
 	public KieContainer kieContainer() throws IOException {
         getKieRepository();
@@ -46,6 +56,11 @@ public class BusinessRulesContainerConfiguration {
 
     }
 	
+	/**
+	 * Gets the filesystem of files that contains the rules files
+	 * @return
+	 * @throws IOException
+	 */
 	private KieFileSystem getKieFileSystem() throws IOException {
 		
 		KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
@@ -56,6 +71,9 @@ public class BusinessRulesContainerConfiguration {
 		return kieFileSystem;
 	}
 	
+	/**
+	 * Create kierepository of rules
+	 */
 	private void getKieRepository() {
         final KieRepository kieRepository = kieServices.getRepository();
         kieRepository.addKieModule(new KieModule() {

@@ -4,8 +4,7 @@
 package com.exercise.util;
 
 /**
- * @author Alberto
- *
+ * Constants used around all application context
  */
 public final class Constants {
 

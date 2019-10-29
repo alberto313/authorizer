@@ -15,9 +15,3 @@ rule "Account must initialized"
 		//modify(violations){add("account-already-initialized")};
 		violations.add("account-already-initialized");
 end
-
-
-
-
-
-//https://stackoverflow.com/questions/47605657/drools-execute-specific-rules-from-kie-container-based-on-a-parameter

@@ -1,8 +1,6 @@
 import com.exercise.model.AccountAccount;
 import com.exercise.model.TransactionTransaction;
 import com.exercise.model.TransactionsRepository;
-import java.util.Date;
-import java.util.Calendar;
 
 global java.util.List violations;
 

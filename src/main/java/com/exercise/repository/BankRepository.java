@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.exercise.model.AccountAccount;
 
 /**
- * Repository to simulate the persist from database
+ * Repository to simulate the persist from database and create a new account
  */
 @Service(value="bankRepository")
 public class BankRepository implements IBankRepository {

@@ -6,8 +6,7 @@ package com.exercise.repository;
 import com.exercise.model.AccountAccount;
 
 /**
- * @author Alberto
- *
+ * Interface for bank repository simulation
  */
 public interface IBankRepository {
 

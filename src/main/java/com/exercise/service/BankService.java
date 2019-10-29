@@ -7,16 +7,12 @@ import static com.exercise.util.Constants.CACHE_ACCOUNT_KEY;
 import static com.exercise.util.Constants.CACHE_TRANSACTIONS_KEY;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.kie.api.runtime.KieContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.exercise.exception.ServiceException;
 import com.exercise.model.Account;
 import com.exercise.model.AccountAccount;
 import com.exercise.model.AccountResponse;
@@ -26,8 +22,8 @@ import com.exercise.model.TransactionsRepository;
 import com.exercise.repository.IBankRepository;
 
 /**
- * @author Alberto
- *
+ * Service class that implement the creation of a new account
+ * and process transactions.
  */
 @Service(value="bankService")
 public class BankService implements IBankService {
@@ -41,6 +37,12 @@ public class BankService implements IBankService {
 	@Autowired
 	private BusinessRulerService businessRuler;
 
+	/**
+	 * Create a new account with provided information and then
+	 * store it in a in-memory cache
+	 * @param body
+	 * @return
+	 */
 	@Override
 	public AccountResponse createAccount(Account body) {
 
@@ -60,6 +62,13 @@ public class BankService implements IBankService {
 		return res;
 	}
 
+	/**
+	 * Process transaction over the account previously created.</br>
+	 * Retrieve the account, previously created, from cache and then validate some business
+	 * rules and perform or not the transaction.
+	 * @param body
+	 * @return
+	 */
 	@Override
 	public AccountResponse performTransaction(Transaction body) {
 		
@@ -71,17 +80,12 @@ public class BankService implements IBankService {
 		List<String> violations = businessRuler.preConditionsTransactionRules(accountDetail, body.getTransaction(), new ArrayList<String>(), transactions);
 		
 		
-
-		
 		if (violations.isEmpty()) {
 			transactions.getTransactions().add(body.getTransaction());
 			accountDetail.setAvailableLimit(accountDetail.getAvailableLimit() - body.getTransaction().getAmount());
 			cacheService.store(CACHE_TRANSACTIONS_KEY, transactions);
 			cacheService.store(CACHE_ACCOUNT_KEY, accountDetail);
 		}
-		
-		
-		
 		
 		res.violations(violations).account(accountDetail);
 		return res;

@@ -1,21 +1,17 @@
 package com.exercise.model;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+
+import org.springframework.validation.annotation.Validated;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
+
 import io.swagger.annotations.ApiModelProperty;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-
 /**
- * TransactionTransaction
+ * Detailed Transaction information to perform over an account
  */
 @Validated
 @javax.annotation.Generated(value = "com.exercise.codegen.languages.SpringCodegen", date = "2019-10-27T21:02:29.588Z")
@@ -28,7 +24,6 @@ public class TransactionTransaction   {
   private int amount = 0;
 
   @JsonProperty("time")
-  //@DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm:ss.SSSZ")
   private String time = null;
 
   public TransactionTransaction merchant(String merchant) {

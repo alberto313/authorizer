@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * AccountAccount
+ * Detailed Account information
  */
 @Validated
 @javax.annotation.Generated(value = "com.exercise.codegen.languages.SpringCodegen", date = "2019-10-27T21:02:29.588Z")
