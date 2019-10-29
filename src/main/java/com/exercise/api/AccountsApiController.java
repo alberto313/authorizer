@@ -54,7 +54,7 @@ public class AccountsApiController implements AccountsApi {
         if (accept != null && accept.contains("application/json")) {
         	return new ResponseEntity<AccountResponse>(bankService.performTransaction(body), OK);
         }
-
+        
         return new ResponseEntity<AccountResponse>(HttpStatus.BAD_REQUEST);
     }
 

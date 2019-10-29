@@ -44,8 +44,8 @@ rule "High frecuency"
 	agenda-group "transaction"
 	when
 		TransactionsRepository($transactions: getTransactions());
-		Date($now : time) from Calendar.getInstance().getTime();
-		$count: Number() from $transactions(TransactionTransaction($now before[0m,3m] getTime(), count(1)));
+		TransactionTransaction($now: getTime());
+		$tranList: ArrayList(size>2) from collect(TransactionTransaction(getTime() before[0m,3m] $now) from $transactions);
 	then
-		System.out.println("count transactions " + $count);
+		violations.add("high-frequency-small-interval");
 end
